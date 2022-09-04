@@ -16,9 +16,12 @@ namespace DiscordMusicBot
             {
                 options.Add(option);
             }
-            
+
+            string url = (string)options[0].Value;
+            if (!url.StartsWith("http")) { url = "https://" + url; }
+
             Uri result; //Needed to use the url tester below
-            bool isValidURL = Uri.TryCreate((string)options[0].Value, UriKind.Absolute, out result); //Test if the link is valid
+            bool isValidURL = Uri.TryCreate(url, UriKind.Absolute, out result); //Test if the link is valid
 
             if (!isValidURL) //invalid link, warn user
             {
