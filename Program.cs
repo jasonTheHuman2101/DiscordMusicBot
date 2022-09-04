@@ -31,7 +31,7 @@ namespace DiscordMusicBot
             client.Log += DiscordLog;
             client.Disconnected += ConnectionLost;
             client.Ready += BotReady;
-
+            client.SlashCommandExecuted += CommandHandler.CommandExecuted;
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
             await Task.Delay(-1);
@@ -47,12 +47,13 @@ namespace DiscordMusicBot
 
         private static async Task LoadCommands()
         {
-            SlashCommandBuilder globalCommand = new SlashCommandBuilder();
-            globalCommand.WithName("test-command");
-            globalCommand.WithDescription("Test Command Description");
+            SlashCommandBuilder PlayCommand = new SlashCommandBuilder();
+            PlayCommand.WithName("play");
+            PlayCommand.WithDescription("Enter a link to a song that you would like to play.");
+            PlayCommand.AddOption("url", ApplicationCommandOptionType.String, "The link to the video.", true);
             try
             {
-                SlashCommandProperties scp = globalCommand.Build();
+                SlashCommandProperties scp = PlayCommand.Build();
                 await client.CreateGlobalApplicationCommandAsync(scp);
             }
             catch(Exception ex)
