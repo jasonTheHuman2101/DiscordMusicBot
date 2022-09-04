@@ -8,7 +8,7 @@ namespace DiscordMusicBot
 {
     static class CommandHandler
     {
-        public static async Task CommandExecuted(SocketSlashCommand arg)
+        public static async Task<Task> CommandExecuted(SocketSlashCommand arg)
         {
             //Gets the command arguments from the response. For some reason, i was unable to access the options directly
             List<SocketSlashCommandDataOption> options = new List<SocketSlashCommandDataOption>();
@@ -26,11 +26,19 @@ namespace DiscordMusicBot
             if (!isValidURL) //invalid link, warn user
             {
                 await arg.RespondAsync($"The link provided is an invalid URL");
+                return Task.CompletedTask;
             }
             else //The link is a valid url
             {
                 await arg.RespondAsync($"Valid link!");
+                
+                return Task.CompletedTask;
             }
+        }
+
+        private static async void AttemptDownload(string url, SocketSlashCommand arg)
+        {
+
         }
     }
 }
