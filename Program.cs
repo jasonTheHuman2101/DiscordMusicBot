@@ -27,13 +27,19 @@ namespace DiscordMusicBot
         {
             Console.WriteLine("========Discord Music Bot v1========\nBy Jason Chesters-salt");
             Console.WriteLine("Attempting to open connection to Discord...");
+            
+            //Create the discord client and wire up all needed events
             client = new DiscordSocketClient();
             client.Log += DiscordLog;
             client.Disconnected += ConnectionLost;
             client.Ready += BotReady;
             client.SlashCommandExecuted += CommandHandler.CommandExecuted;
+
+            //Attempt first log in
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
+
+            //Do nothing until program is closed
             await Task.Delay(-1);
             await client.StopAsync();
             client.Dispose();
@@ -47,11 +53,14 @@ namespace DiscordMusicBot
 
         private static async Task LoadCommands()
         {
+            //Create the play command
             SlashCommandBuilder PlayCommand = new SlashCommandBuilder();
             PlayCommand.WithName("play");
             PlayCommand.WithDescription("Enter a link to a song that you would like to play.");
-            PlayCommand.AddOption("url", ApplicationCommandOptionType.String, "The link to the video.", true);
-            try
+
+            PlayCommand.AddOption("url", ApplicationCommandOptionType.String, "The link to the video.", true); //Command parameter
+            
+            try //Create the command and push it to discord
             {
                 SlashCommandProperties scp = PlayCommand.Build();
                 await client.CreateGlobalApplicationCommandAsync(scp);
@@ -62,14 +71,14 @@ namespace DiscordMusicBot
             }
         }
 
-        private static Task ConnectionLost(Exception arg)
+        private static Task ConnectionLost(Exception arg) //Reconnects the bot
         {
             Console.WriteLine("BOT ATTEMPTING TO RECONNECT!");
             ConnectBot();
             return Task.CompletedTask;
         }
 
-        static async void ConnectBot()
+        static async void ConnectBot() //Establishes connection to discord
         {
             await client.LoginAsync(TokenType.Bot, token);
             await client.StartAsync();
