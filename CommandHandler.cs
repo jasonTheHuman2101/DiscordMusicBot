@@ -38,7 +38,7 @@ namespace DiscordMusicBot
             else //The link is a valid url
             {
                 await arg.RespondAsync($"Valid link!");
-                
+                sh.DownloadSong(url); //Don't run async. It takes time to do the download, so using async could bog the program down and cause it to disconnect
                 return Task.CompletedTask;
             }
         }

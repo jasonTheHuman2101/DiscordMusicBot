@@ -25,7 +25,8 @@ namespace DiscordMusicBot
 
         public async Task DownloadSong(string url)
         {
-
+            await ytdl.RunAudioDownload(url, YoutubeDLSharp.Options.AudioConversionFormat.Opus);
+            Console.WriteLine("downloaded");
         }
     }
 }
