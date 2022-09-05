@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 namespace DiscordMusicBot
 {
-    static class CommandHandler
+    class CommandHandler
     {
-        public static async Task<Task> CommandExecuted(SocketSlashCommand arg)
+        SongHandler sh;
+
+        public CommandHandler()
+        {
+            sh = new SongHandler();
+        }
+
+        public async Task<Task> CommandExecuted(SocketSlashCommand arg)
         {
             //Gets the command arguments from the response. For some reason, i was unable to access the options directly
             List<SocketSlashCommandDataOption> options = new List<SocketSlashCommandDataOption>();
@@ -34,11 +41,6 @@ namespace DiscordMusicBot
                 
                 return Task.CompletedTask;
             }
-        }
-
-        private static async void AttemptDownload(string url, SocketSlashCommand arg)
-        {
-
         }
     }
 }

@@ -15,10 +15,11 @@ namespace DiscordMusicBot
 
         static DiscordSocketClient client;
         static string token = File.ReadAllText("token.txt");
-
+        static CommandHandler commandHandler;
 
         static void Main(string[] args)
         {
+            commandHandler = new CommandHandler();            
             MainAsyncProcess();
             while (true) ;
         }
@@ -33,7 +34,7 @@ namespace DiscordMusicBot
             client.Log += DiscordLog;
             client.Disconnected += ConnectionLost;
             client.Ready += BotReady;
-            client.SlashCommandExecuted += CommandHandler.CommandExecuted;
+            client.SlashCommandExecuted += commandHandler.CommandExecuted;
 
             //Attempt first log in
             await client.LoginAsync(TokenType.Bot, token);
